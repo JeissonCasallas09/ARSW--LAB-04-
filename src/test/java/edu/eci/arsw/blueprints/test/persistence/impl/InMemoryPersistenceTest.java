@@ -10,6 +10,9 @@ import edu.eci.arsw.blueprints.model.Point;
 import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
 import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
 import edu.eci.arsw.blueprints.persistence.impl.InMemoryBlueprintPersistence;
+
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Test;
@@ -69,6 +72,38 @@ public class InMemoryPersistenceTest {
         
     }
 
+    @Test
+    public void findExistingAuthorWithBlueprints() throws BlueprintPersistenceException{
+        InMemoryBlueprintPersistence ibpp=new InMemoryBlueprintPersistence();
 
+        Point[] pts1=new Point[]{new Point(0, 0),new Point(10, 10)};
+        Point[] pts2=new Point[]{new Point(20, 0),new Point(0, 20)};
+        Point[] pts3=new Point[]{new Point(13, 5),new Point(8, -10)};
+
+        Blueprint bp1=new Blueprint("leo", "miCasita",pts1);
+        Blueprint bp2=new Blueprint("leo", "miTiendita",pts2);
+        Blueprint bp3=new Blueprint("leo", "miLotecito",pts3);
+
+        ibpp.saveBlueprint(bp1);
+        ibpp.saveBlueprint(bp2);
+        ibpp.saveBlueprint(bp3);
+
+        Set<Blueprint> blueprintsByLeo = ibpp.getBlueprintsByAuthor("leo");
+
+        Set<Blueprint> expectedBlueprints = new HashSet<>();
+        expectedBlueprints.add(bp1);
+        expectedBlueprints.add(bp2);
+        expectedBlueprints.add(bp3);
+        assertEquals(blueprintsByLeo, expectedBlueprints);
+    }
     
+    @Test
+    public void findNonExistingAutors(){
+        InMemoryBlueprintPersistence ibpp=new InMemoryBlueprintPersistence();
+
+        Set<Blueprint> blueprintsByJeisont = ibpp.getBlueprintsByAuthor("jeisont");
+
+        assertEquals(blueprintsByJeisont.size(), 0);
+
+    }
 }

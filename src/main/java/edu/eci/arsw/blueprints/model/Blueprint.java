@@ -21,6 +21,20 @@ public class Blueprint {
         points=Arrays.asList(pnts);
     }
          
+    public Blueprint(String author,String name, int[][] pnts){
+        this.author=author;
+        this.name=name;
+        List<Point> pointsArray = new ArrayList<>(); 
+
+        for(int[] point : pnts){
+            int x = point[0];
+            int y = point[1];
+            Point pointAdded = new Point(x,y);
+            pointsArray.add(pointAdded);
+        }
+        points = pointsArray;
+    }
+
     public Blueprint(String author, String name){
         this.name=name;
         points=new ArrayList<>();

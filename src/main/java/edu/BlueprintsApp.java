@@ -34,7 +34,7 @@ public class BlueprintsApp implements CommandLineRunner {
         while(running){
             System.out.println("<========== GESTOR DE PLANOS ==========>");
             System.out.println("");
-            System.out.println("Digite una opción:\n1.Buscar plano por autor y nombre\n2.Consultar planos de un autor\n3.Registrar un nuevo plano");
+            System.out.println("Digite una opción:\n1.Buscar plano por autor y nombre\n2.Consultar planos de un autor\n3.Registrar un nuevo plano\n4.Consultar todos los planos");
             System.out.println("");
             String selection0 = scanner.nextLine();
 
@@ -61,6 +61,10 @@ public class BlueprintsApp implements CommandLineRunner {
                 String selection5= scanner.nextLine();
                 int numberOfPoints= Integer.parseInt(selection5);
                 addBlueprint(selection3, selection4, getPointsFromUser(numberOfPoints));
+            }
+            else if(selection0.equals("4")){
+                System.out.println("Aqui tienes todos los planos existente hasta el momento!");
+                getAllBlueprints();
             }
         }
     }
@@ -89,7 +93,7 @@ public class BlueprintsApp implements CommandLineRunner {
 
     private void getBlueprintsByAuthor(String author){
         try {
-            System.out.println(blueprintsServices.getBlueprintsByAuthor(author).toString());
+            System.out.println(blueprintsServices.getBlueprintsByAuthor(author));
         } catch (BlueprintNotFoundException e) {
             e.printStackTrace();
         }
@@ -98,6 +102,14 @@ public class BlueprintsApp implements CommandLineRunner {
     private void addBlueprint(String author, String name, int[][]points){
         try {
             blueprintsServices.addNewBlueprint(author,name,points);
+        } catch (BlueprintPersistenceException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getAllBlueprints(){
+        try {
+            System.out.println(blueprintsServices.getAllBlueprints());
         } catch (BlueprintPersistenceException e) {
             e.printStackTrace();
         }

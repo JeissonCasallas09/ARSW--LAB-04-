@@ -43,6 +43,11 @@ public class Blueprint {
     public Blueprint() {
     }    
     
+    //Nuevo
+    public void setPoints(List<Point> points) {
+        this.points = points;
+    }
+
     public String getName() {
         return name;
     }
